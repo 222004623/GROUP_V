@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:group_v/models/Students.dart';
-import '../viewmodels/student_viewmodel.dart';
+
+import '../viewmodels/Student_viewmodel.dart';
 
 // logical grouping of related fields,
 // controlled input to avoid invalid selections,

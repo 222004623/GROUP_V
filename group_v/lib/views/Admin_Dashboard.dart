@@ -3,14 +3,12 @@ student number:
 Student names: 
 */
 import 'package:flutter/material.dart';
-import 'package:group_v/routeManager/RouteManager.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/student.dart';
+import '../models/Students.dart';
 import '../viewmodels/student_viewmodel.dart';
-import '../viewmodels/auth_viewmodel.dart';
-import 'edit_student_page.dart';
-import 'student_details_page.dart';
+import '../viewmodels/AuthViewModel.dart';
+import '../views/edit_student_page.dart';
+import '../views/Application_Detail_Screen.dart';
 
 // View all submitted applications.
 // Review applicant information and supporting documentation.
@@ -129,7 +127,7 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const EditStudentPage(student: student),
+        builder: (_) => const EditStudentPage(),
       ),
     ).then((_) => context.read<StudentViewModel>().fetchStudents());
   }
@@ -137,14 +135,14 @@ class _AdminDashBoardViewState extends State<AdminDashBoardView> {
   void _navigateToEdit(Student student) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => EditStudentPage(student: student)),
+      MaterialPageRoute(builder: (_) => EditStudentPage()),
     ).then((_) => context.read<StudentViewModel>().fetchStudents());
   }
 
   void _navigateToDetails(Student student) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => StudentDetailsPage(student: student)),
+      MaterialPageRoute(builder: (_) => StudentDetailsPage(student: student, message: '', )),
     );
   }
 }
