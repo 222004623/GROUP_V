@@ -7,6 +7,7 @@ import 'package:group_v/views/StudentAssistantApplicationForm.dart';
 
 class RouteManager {
   //Static routes
+  static const String login = '/login';
   static const String home = '/';
   static const String details = '/details';
   static const String applicationForm = '/applicationForm';
@@ -14,6 +15,9 @@ class RouteManager {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case login:
+        return MaterialPageRoute(builder: (_) => const HomeView());
+
       case home:
         return MaterialPageRoute(builder: (_) => const HomeView());
 
