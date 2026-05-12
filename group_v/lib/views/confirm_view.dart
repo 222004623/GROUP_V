@@ -1,3 +1,4 @@
+// TODO Implement this library.
 /*
 student number:
 Student names: 
@@ -7,8 +8,8 @@ import 'package:group_v/routeManager/RouteManager.dart';
 
 // Display submitted Student Assistant application 
 // View current status of a student application.
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class ConfirmView extends StatelessWidget {
+  const ConfirmView({super.key});
 
   @override
   Widget build(BuildContext context) {

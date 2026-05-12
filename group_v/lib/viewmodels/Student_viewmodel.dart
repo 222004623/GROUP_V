@@ -143,6 +143,33 @@ class StudentViewModel extends ChangeNotifier {
     }
   }
 
+  // void updateName(String name) {
+  //   _students = _students.copyWith(name: name);
+  //   notifyListeners();
+  // }
+
+  Future<bool> updateName(String id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final student = getStudentById(id);
+      // Delete profile picture from storage
+      if (student?.profilePictureUrl != null) {
+        await _storageService.deleteProfilePicture(student!.profilePictureUrl!);
+      }
+      // Delete from database
+      await _supabase.from('students').delete().match({'id': id});
+      _students.removeWhere((s) => s.id == id);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
   // ==================== DELETE ====================
   Future<bool> deleteStudent(String id) async {
     _isLoading = true;

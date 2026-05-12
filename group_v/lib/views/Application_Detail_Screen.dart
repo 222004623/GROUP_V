@@ -2,6 +2,7 @@
 student number:
 Student names: 
 */
+import 'package:group_v/models/Students.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:group_v/routeManager/RouteManager.dart';
@@ -14,7 +15,7 @@ import 'package:group_v/viewmodels/Student_viewmodel.dart';
 class StudentDetailsPage extends StatelessWidget {
   final String message;
 
-  const StudentDetailsPage({super.key, required this.message});
+  const StudentDetailsPage({super.key, required this.message, required Student student});
 
   @override
   Widget build(BuildContext context) {

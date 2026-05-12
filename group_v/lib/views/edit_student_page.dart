@@ -1,3 +1,4 @@
+// TODO Implement this library.
 /*
 student number:
 Student names: 
@@ -5,10 +6,11 @@ Student names:
 import 'package:flutter/material.dart';
 import 'package:group_v/routeManager/RouteManager.dart';
 
+
 // Display submitted Student Assistant application 
 // View current status of a student application.
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class EditStudentPage extends StatelessWidget {
+  const EditStudentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
