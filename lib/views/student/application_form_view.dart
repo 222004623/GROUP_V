@@ -219,7 +219,7 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
               _sectionTitle('Personal Info'),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _yearOfStudy,
+                initialValue: _yearOfStudy,
                 decoration: _dropdownDecoration(
                     'Current Year of Study', Icons.school_outlined),
                 items: _years
@@ -235,9 +235,9 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
                 semester: _semester1,
                 moduleCode: _moduleCode1,
                 onLevelChanged: (v) => setState(
-                    () => {_level1 = v, _semester1 = null, _moduleCode1 = null}),
+                    () {_level1 = v; _semester1 = null; _moduleCode1 = null;}),
                 onSemesterChanged: (v) =>
-                    setState(() => {_semester1 = v, _moduleCode1 = null}),
+                    setState(() {_semester1 = v; _moduleCode1 = null;}),
                 onModuleChanged: (v) => setState(() => _moduleCode1 = v),
               ),
               const SizedBox(height: 20),
@@ -279,9 +279,9 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
                   semester: _semester2,
                   moduleCode: _moduleCode2,
                   onLevelChanged: (v) => setState(
-                      () => {_level2 = v, _semester2 = null, _moduleCode2 = null}),
+                      () {_level2 = v; _semester2 = null; _moduleCode2 = null;}),
                   onSemesterChanged: (v) =>
-                      setState(() => {_semester2 = v, _moduleCode2 = null}),
+                      setState(() {_semester2 = v; _moduleCode2 = null;}),
                   onModuleChanged: (v) => setState(() => _moduleCode2 = v),
                 ),
               ],
@@ -392,7 +392,7 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
     return Column(
       children: [
         DropdownButtonFormField<String>(
-          value: level,
+          initialValue: level,
           decoration:
               _dropdownDecoration('Academic Level', Icons.layers_outlined),
           items: _levels
@@ -402,7 +402,7 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
         ),
         const SizedBox(height: 12),
         DropdownButtonFormField<String>(
-          value: semester,
+          initialValue: semester,
           decoration: _dropdownDecoration(
               'Semester', Icons.calendar_today_outlined),
           items: _semesters
@@ -412,7 +412,7 @@ class _ApplicationFormViewState extends State<ApplicationFormView> {
         ),
         const SizedBox(height: 12),
         DropdownButtonFormField<String>(
-          value: moduleCode,
+          initialValue: moduleCode,
           decoration: _dropdownDecoration('Module', Icons.book_outlined),
           isExpanded: true,
           items: modules

@@ -175,7 +175,7 @@ class _CompleteProfileViewState extends State<CompleteProfileView> {
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
-                  value: _selectedYear,
+                  initialValue: _selectedYear,
                   decoration: _dropdownDecoration(
                     'Year of Study',
                     Icons.school_outlined,
@@ -203,7 +203,7 @@ class _CompleteProfileViewState extends State<CompleteProfileView> {
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
-                  value: _selectedGender,
+                  initialValue: _selectedGender,
                   decoration: _dropdownDecoration('Gender', Icons.wc_outlined),
                   items: _genders
                       .map((g) => DropdownMenuItem(value: g, child: Text(g)))

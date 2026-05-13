@@ -4,7 +4,6 @@ Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, N
  */
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import '../models/application_model.dart';
 import '../services/application_service.dart';
 

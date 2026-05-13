@@ -101,8 +101,9 @@ class _ProfileViewState extends State<ProfileView> {
         AppSnackbar.success(context, 'Profile updated successfully!');
       }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         AppSnackbar.error(context, 'Failed to update profile. Try again.');
+      }
     } finally {
       setState(() => _isSaving = false);
     }
@@ -229,7 +230,7 @@ class _ProfileViewState extends State<ProfileView> {
 
                     // Year of study dropdown
                     DropdownButtonFormField<String>(
-                      value: _selectedYear,
+                      initialValue: _selectedYear,
                       decoration: InputDecoration(
                         labelText: 'Year of Study',
                         filled: true,
@@ -263,7 +264,7 @@ class _ProfileViewState extends State<ProfileView> {
                     const SizedBox(height: 16),
 
                     DropdownButtonFormField<String>(
-                      value: _selectedGender,
+                      initialValue: _selectedGender,
                       decoration: InputDecoration(
                         labelText: 'Gender',
                         filled: true,
