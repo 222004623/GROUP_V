@@ -1,3 +1,7 @@
+/* 
+Student Number:  222004623, 224051673, 223019042, 220044858, 223002326, 221032720     
+Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, NF Zwane
+ */
 import 'package:flutter/material.dart';
 import '../app_theme.dart';
 

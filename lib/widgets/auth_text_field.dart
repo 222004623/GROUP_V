@@ -1,3 +1,7 @@
+/* 
+Student Number:  222004623, 224051673, 223019042, 220044858, 223002326, 221032720     
+Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, NF Zwane
+ */
 import 'package:flutter/material.dart';
 import '../app_theme.dart';
 
@@ -42,11 +46,11 @@ class _AuthTextFieldState extends State<AuthTextField> {
       style: const TextStyle(
         color: AppTheme.textPrimary,
         fontSize: 14,
-        fontFamily: 'Poppins',
+        fontFamily: 'Times New Roman',
       ),
       decoration: InputDecoration(
         labelText: widget.label,
-        border:OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         prefixIcon: widget.prefixIcon != null
             ? Icon(widget.prefixIcon, color: AppTheme.textSecondary, size: 20)
             : null,

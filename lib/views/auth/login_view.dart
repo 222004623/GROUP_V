@@ -1,3 +1,9 @@
+/* 
+Student Number:  222004623, 224051673, 223019042, 220044858, 223002326, 221032720     
+Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, NF Zwane
+
+Question: Login Screen
+ */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../app_theme.dart';
@@ -29,18 +35,21 @@ class _LoginViewState extends State<LoginView> {
     if (!_formKey.currentState!.validate()) return;
 
     final vm = context.read<AuthViewModel>();
-    final success =
-        await vm.login(_emailCtrl.text.trim(), _passwordCtrl.text);
+    final success = await vm.login(_emailCtrl.text.trim(), _passwordCtrl.text);
 
     if (!mounted) return;
 
     if (success) {
       AppSnackbar.success(context, 'Welcome back!');
       final role = vm.user!.role;
+      final route = role == 'admin'
+          ? '/admin'
+          : vm.user!.hasCompleteProfile
+          ? '/student'
+          : '/complete-profile';
       await Future.delayed(const Duration(milliseconds: 500));
       if (!mounted) return;
-      Navigator.pushReplacementNamed(
-          context, role == 'admin' ? '/admin' : '/home');
+      Navigator.pushReplacementNamed(context, route);
     } else {
       // Friendly error mapping
       final raw = vm.errorMessage ?? 'Login failed';
@@ -51,6 +60,7 @@ class _LoginViewState extends State<LoginView> {
 
   // Maps Supabase error codes to user-friendly messages
   String _mapError(String raw) {
+    debugPrint('LOGIN ERROR: $raw'); // check your console for the real error
     if (raw.contains('Invalid login credentials') ||
         raw.contains('invalid_credentials')) {
       return 'Incorrect email or password. Please try again.';
@@ -62,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
         raw.contains('rate_limit')) {
       return 'Too many attempts. Please wait a moment.';
     }
-    return 'Something went wrong. Please try again.';
+    return raw; // temporarily show raw error instead of generic message
   }
 
   void _forgotPassword() async {
@@ -71,19 +81,18 @@ class _LoginViewState extends State<LoginView> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Reset Password',
-            style: TextStyle(
-                fontFamily: 'Poppins', fontWeight: FontWeight.w700)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        title: const Text(
+          'Reset Password',
+          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
               'Enter your email and we\'ll send you a reset link.',
-              style:
-                  TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -91,20 +100,22 @@ class _LoginViewState extends State<LoginView> {
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email',
-                prefixIcon: Icon(Icons.email_outlined, size: 20),
+                prefixIcon: Icon(Icons.email_rounded, size: 20),
               ),
             ),
           ],
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel',
-                  style: TextStyle(color: AppTheme.textSecondary))),
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppTheme.textSecondary),
+            ),
+          ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size(100, 42)),
+            style: ElevatedButton.styleFrom(minimumSize: const Size(100, 42)),
             child: const Text('Send Link'),
           ),
         ],
@@ -120,8 +131,7 @@ class _LoginViewState extends State<LoginView> {
       try {
         await context.read<AuthViewModel>().sendPasswordReset(email);
         if (mounted) {
-          AppSnackbar.success(
-              context, 'Reset link sent! Check your inbox.');
+          AppSnackbar.success(context, 'Reset link sent! Check your inbox.');
         }
       } catch (_) {
         if (mounted) {
@@ -137,44 +147,39 @@ class _LoginViewState extends State<LoginView> {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
+      appBar: AppBar(title: const Text('Login')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 28),
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
-                // Back to splash
-                IconButton(
-                  onPressed: () =>
-                      Navigator.pushReplacementNamed(context, '/'),
-                  icon: const Icon(Icons.arrow_back_ios_new,
-                      color: AppTheme.primary, size: 20),
-                  padding: EdgeInsets.zero,
+                const Icon(
+                  Icons.account_circle,
+                  color: AppTheme.primary,
+                  size: 36,
                 ),
-
                 const SizedBox(height: 16),
-
-                // Header
                 const Text(
-                  'Login here',
+                  textAlign: TextAlign.center,
+                  'Welcome back',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.primary,
+                    color: AppTheme.textPrimary,
                     fontFamily: 'Poppins',
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 const Text(
-                  "Welcome back, you've\nbeen missed!",
+                  'Sign in to move to your dashboard.',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
+                    fontSize: 14,
+                    color: AppTheme.textSecondary,
                     height: 1.4,
                   ),
                 ),
@@ -185,10 +190,11 @@ class _LoginViewState extends State<LoginView> {
                 AuthTextField(
                   label: 'Email',
                   controller: _emailCtrl,
-                  prefixIcon: Icons.email_outlined,
+                  prefixIcon: Icons.email_rounded,
                   keyboardType: TextInputType.emailAddress,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Email is required';
+                    if (v == null || v.trim().isEmpty)
+                      return 'Email is required';
                     if (!v.contains('@') || !v.contains('.')) {
                       return 'Enter a valid email address';
                     }
@@ -202,11 +208,12 @@ class _LoginViewState extends State<LoginView> {
                 AuthTextField(
                   label: 'Password',
                   controller: _passwordCtrl,
-                  prefixIcon: Icons.lock_outline,
+                  prefixIcon: Icons.visibility,
                   obscure: true,
                   validator: (v) {
                     if (v == null || v.isEmpty) return 'Password is required';
-                    if (v.length < 6) return 'Password must be at least 6 characters';
+                    if (v.length < 6)
+                      return 'Password must be at least 6 characters';
                     return null;
                   },
                 ),
@@ -223,14 +230,18 @@ class _LoginViewState extends State<LoginView> {
                           value: _rememberMe,
                           activeColor: AppTheme.primary,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                           onChanged: (v) =>
                               setState(() => _rememberMe = v ?? false),
                         ),
-                        const Text('Remember me',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: AppTheme.textSecondary)),
+                        const Text(
+                          'Remember me',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppTheme.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                     TextButton(
@@ -252,27 +263,14 @@ class _LoginViewState extends State<LoginView> {
                 // Login button
                 ElevatedButton(
                   onPressed: vm.isLoading ? null : _submit,
-                                    style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primary,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 54),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    textStyle: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    elevation: 0,
-                  ),
-
                   child: vm.isLoading
                       ? const SizedBox(
                           height: 22,
                           width: 22,
                           child: CircularProgressIndicator(
-                              color: Colors.white, strokeWidth: 2.5),
+                            color: Colors.white,
+                            strokeWidth: 2.5,
+                          ),
                         )
                       : const Text('Sign in'),
                 ),
@@ -288,7 +286,9 @@ class _LoginViewState extends State<LoginView> {
                       text: const TextSpan(
                         text: "Don't have an account? ",
                         style: TextStyle(
-                            color: AppTheme.textSecondary, fontSize: 14),
+                          color: AppTheme.textSecondary,
+                          fontSize: 14,
+                        ),
                         children: [
                           TextSpan(
                             text: 'Create new account',

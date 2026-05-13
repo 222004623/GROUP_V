@@ -1,9 +1,15 @@
+/* 
+Student Number:  222004623, 224051673, 223019042, 220044858, 223002326, 221032720     
+Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, NF Zwane
+
+Question : Register Screen
+ */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../viewmodels/auth_viewmodel.dart';
-import '../../widgets/auth_text_field.dart';
 import '../../widgets/app_snackbar.dart';
+import '../../widgets/auth_text_field.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -38,14 +44,13 @@ class _RegisterViewState extends State<RegisterView> {
     if (!mounted) return;
 
     if (success) {
-      AppSnackbar.success(context, 'Account created successfully!');
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
+      AppSnackbar.success(context, 'Account created successfully.');
+      Navigator.pushReplacementNamed(context, '/complete-profile');
     } else {
-      final raw = vm.errorMessage ?? 'Registration failed';
-      final friendly = _mapError(raw);
-      AppSnackbar.error(context, friendly);
+      AppSnackbar.error(
+        context,
+        _mapError(vm.errorMessage ?? 'Registration failed'),
+      );
     }
   }
 
@@ -54,12 +59,14 @@ class _RegisterViewState extends State<RegisterView> {
         raw.contains('already been registered') ||
         raw.contains('user_already_exists')) {
       return 'An account with this email already exists.';
-    } else if (raw.contains('weak_password') ||
-        raw.contains('Password should')) {
+    }
+    if (raw.contains('weak_password') || raw.contains('Password should')) {
       return 'Password is too weak. Use at least 6 characters.';
-    } else if (raw.contains('invalid') && raw.contains('email')) {
+    }
+    if (raw.contains('invalid') && raw.contains('email')) {
       return 'Enter a valid email address.';
-    } else if (raw.contains('network') || raw.contains('socket')) {
+    }
+    if (raw.contains('network') || raw.contains('socket')) {
       return 'No internet connection. Check your network.';
     }
     return 'Something went wrong. Please try again.';
@@ -71,71 +78,56 @@ class _RegisterViewState extends State<RegisterView> {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
+      appBar: AppBar(title: const Text('Create Account')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 24),
-
-                IconButton(
-                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: AppTheme.primary,
-                    size: 20,
-                  ),
-                  padding: EdgeInsets.zero,
-                ),
-
-                const SizedBox(height: 16),
-
                 const Text(
-                  'Create Account',
+                  'Register',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.primary,
+                    color: AppTheme.textPrimary,
                     fontFamily: 'Poppins',
                   ),
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Create an account so you can\nexplore all existing positions',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textSecondary,
-                    height: 1.5,
-                  ),
+                  'Create your login first. You will complete your profile next.',
+                  style: TextStyle(color: AppTheme.textSecondary, height: 1.5),
                 ),
-
-                const SizedBox(height: 36),
-
+                const SizedBox(height: 28),
+                const Icon(
+                  Icons.app_registration_rounded,
+                  color: AppTheme.primary,
+                  size: 36,
+                ),
+                const SizedBox(height: 18),
                 AuthTextField(
                   label: 'Email',
                   controller: _emailCtrl,
-                  prefixIcon: Icons.email_outlined,
+                  prefixIcon: Icons.email_rounded,
                   keyboardType: TextInputType.emailAddress,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty)
+                    if (v == null || v.trim().isEmpty) {
                       return 'Email is required';
+                    }
                     if (!v.contains('@') || !v.contains('.')) {
                       return 'Enter a valid email address';
                     }
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 16),
-
                 AuthTextField(
                   label: 'Password',
                   controller: _passwordCtrl,
-                  prefixIcon: Icons.lock_outline,
+                  prefixIcon: Icons.visibility,
                   obscure: true,
                   validator: (v) {
                     if (v == null || v.isEmpty) return 'Password is required';
@@ -145,9 +137,7 @@ class _RegisterViewState extends State<RegisterView> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 16),
-
                 AuthTextField(
                   label: 'Confirm Password',
                   controller: _confirmCtrl,
@@ -163,26 +153,9 @@ class _RegisterViewState extends State<RegisterView> {
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 32),
-
+                const SizedBox(height: 28),
                 ElevatedButton(
                   onPressed: vm.isLoading ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primary,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 54),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    textStyle: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    elevation: 0,
-                  ),
-
                   child: vm.isLoading
                       ? const SizedBox(
                           height: 22,
@@ -192,11 +165,9 @@ class _RegisterViewState extends State<RegisterView> {
                             strokeWidth: 2.5,
                           ),
                         )
-                      : const Text('Sign up'),
+                      : const Text('Create Account'),
                 ),
-
-                const SizedBox(height: 24),
-
+                const SizedBox(height: 18),
                 Center(
                   child: GestureDetector(
                     onTap: () =>
@@ -221,8 +192,6 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 32),
               ],
             ),
           ),

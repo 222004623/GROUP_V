@@ -1,4 +1,7 @@
-
+/* 
+Student Number:  222004623, 224051673, 223019042, 220044858, 223002326, 221032720     
+Student Names:  Seatlholo KG, Matsane K, Molefe SB, Nyelimane T, Lesenyeho LJ, NF Zwane
+ */
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -59,6 +62,11 @@ Future<void> sendPasswordReset(String email) async {
   Future<void> logout() async {
     await _authService.logout();
     _user = null;
+    notifyListeners();
+  }
+
+  Future<void> refreshCurrentUser() async {
+    _user = await _authService.getCurrentProfile();
     notifyListeners();
   }
 }
